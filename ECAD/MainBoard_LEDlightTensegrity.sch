@@ -38,7 +38,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title ""
-Date "28 aug 2014"
+Date "29 aug 2014"
 Rev ""
 Comp ""
 Comment1 ""
@@ -77,6 +77,28 @@ F 1 "NRF24L01_MODULE" H 7600 3050 60  0000 C CNN
 F 2 "" H 7600 3050 60  0000 C CNN
 F 3 "" H 7600 3050 60  0000 C CNN
 	1    7600 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L OKL-T6-W12 U?
+U 1 1 53FE95D6
+P 3600 2200
+F 0 "U?" H 3050 2450 60  0000 C CNN
+F 1 "OKL-T6-W12" H 3600 2200 60  0000 C CNN
+F 2 "" H 3650 2350 60  0000 C CNN
+F 3 "" H 3650 2350 60  0000 C CNN
+	1    3600 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L CJ1117-3.3 U?
+U 1 1 54001795
+P 6000 1950
+F 0 "U?" H 6300 2200 60  0000 C CNN
+F 1 "CJ1117-3.3" H 6000 1750 60  0000 C CNN
+F 2 "" H 6000 1950 60  0000 C CNN
+F 3 "" H 6000 1950 60  0000 C CNN
+	1    6000 1950
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
