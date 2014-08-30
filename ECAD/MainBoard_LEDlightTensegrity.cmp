@@ -1,0 +1,108 @@
+Cmp-Mod V01 Created by CvPcb (2013-07-07 BZR 4022)-stable date = 8/29/2014 4:23:41 PM
+
+BeginCmp
+TimeStamp = /53FE524D;
+Reference = IC1;
+ValeurCmp = ARDUINO_PRO_MINI_5V;
+IdModule  = ArduinoProMini-5V;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400E87D;
+Reference = K1;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400E88A;
+Reference = K2;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400F2ED;
+Reference = K3;
+ValeurCmp = CONN_3;
+IdModule  = SIL-3;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400F7F1;
+Reference = P1;
+ValeurCmp = CONN_2;
+IdModule  = SIL-2;
+EndCmp
+
+BeginCmp
+TimeStamp = /54010B89;
+Reference = P2;
+ValeurCmp = CONN_2;
+IdModule  = SIL-2;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400E945;
+Reference = R1;
+ValeurCmp = 1.33K;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400FC9D;
+Reference = R2;
+ValeurCmp = 0;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400FCA3;
+Reference = R3;
+ValeurCmp = 0;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400F45E;
+Reference = R4;
+ValeurCmp = 300;
+IdModule  = SM0603;
+EndCmp
+
+BeginCmp
+TimeStamp = /5400E936;
+Reference = SW1;
+ValeurCmp = SPST;
+IdModule  = SIL-2;
+EndCmp
+
+BeginCmp
+TimeStamp = /53FE95D6;
+Reference = U1;
+ValeurCmp = OKL-T6-W12;
+IdModule  = OKL-T6-W12;
+EndCmp
+
+BeginCmp
+TimeStamp = /54001795;
+Reference = U2;
+ValeurCmp = CJ1117-3.3;
+IdModule  = SOT223;
+EndCmp
+
+BeginCmp
+TimeStamp = /53FE7A8E;
+Reference = U3;
+ValeurCmp = REDBOTACCEL;
+IdModule  = RedBotAccel;
+EndCmp
+
+BeginCmp
+TimeStamp = /53FE90D5;
+Reference = U4;
+ValeurCmp = NRF24L01_MODULE;
+IdModule  = nRF24L01_Module;
+EndCmp
+
+EndListe

@@ -1,0 +1,104 @@
+PCBNEW-LibModule-V1  8/29/2014 3:37:11 PM
+# encoding utf-8
+Units mm
+$INDEX
+OKL-T6-W12
+$EndINDEX
+$MODULE OKL-T6-W12
+Po 0 0 0 15 54010087 00000000 ~~
+Li OKL-T6-W12
+Sc 0
+AR 
+Op 0 0 0
+T0 0 7.62 1 1 0 0.15 N V 21 N "OKL-T6-W12"
+T1 0 -7.62 1 1 0 0.15 N V 21 N "VAL**"
+DS 6.35 -6.35 -6.35 -6.35 0.15 21
+DS -6.35 -6.35 -6.35 6.35 0.15 21
+DS -6.35 6.35 6.35 6.35 0.15 21
+DS 6.35 6.35 6.35 -6.35 0.15 21
+$PAD
+Sh "1" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -4.57 0
+$EndPAD
+$PAD
+Sh "2" R 4.2 1.8 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -3.43 -4.57
+$EndPAD
+$PAD
+Sh "3" R 4.2 1.8 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 1.14 -4.57
+$EndPAD
+$PAD
+Sh "4" R 1.8 4.1 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 4.57 -3.43
+$EndPAD
+$PAD
+Sh "5" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 4.57 0
+$EndPAD
+$PAD
+Sh "6" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 4.57 4.57
+$EndPAD
+$PAD
+Sh "7" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 0 4.57
+$EndPAD
+$PAD
+Sh "8" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -2.29 4.57
+$EndPAD
+$PAD
+Sh "9" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -4.57 4.57
+$EndPAD
+$PAD
+Sh "10" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po -4.57 2.29
+$EndPAD
+$PAD
+Sh "11" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 4.57 2.29
+$EndPAD
+$PAD
+Sh "12" R 1.27 1.27 0 0 0
+Dr 0 0 0
+At SMD N 00888000
+Ne 0 ""
+Po 2.29 4.57
+$EndPAD
+$EndMODULE OKL-T6-W12
+$EndLIBRARY
