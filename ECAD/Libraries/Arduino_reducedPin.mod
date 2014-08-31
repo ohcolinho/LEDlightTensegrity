@@ -1,8 +1,9 @@
-PCBNEW-LibModule-V1  8/29/2014 4:06:18 PM
+PCBNEW-LibModule-V1  8/30/2014 5:09:50 PM
 # encoding utf-8
 Units mm
 $INDEX
 ArduinoProMini-5V
+ArduinoProMini-5V-reduced
 $EndINDEX
 $MODULE ArduinoProMini-5V
 Po 0 0 0 15 5401075B 00000000 ~~
@@ -136,4 +137,138 @@ Ne 13 "N-0000016"
 Po 6.35 15.24
 $EndPAD
 $EndMODULE ArduinoProMini-5V
+$MODULE ArduinoProMini-5V-reduced
+Po 0 0 0 15 540267C9 00000000 ~~
+Li ArduinoProMini-5V-reduced
+Cd ArduinoProMini-5V-reduced
+Kw Arduino
+Sc 0
+AR 
+Op 0 0 0
+T0 0 0 1 1 900 0.15 N V 21 N "ArduinoProMini-5V-reduced"
+T1 0 -17.78 1 1 0 0.15 N V 21 N "VAL**"
+DS -8.89 -16.51 -8.89 16.51 0.15 21
+DS -8.89 16.51 8.89 16.51 0.15 21
+DS 8.89 16.51 8.89 -16.51 0.15 21
+DS 8.89 -16.51 -8.89 -16.51 0.15 21
+$PAD
+Sh "9" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 7.62 -7.62
+$EndPAD
+$PAD
+Sh "12" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 7.62 -15.24
+$EndPAD
+$PAD
+Sh "13" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 -15.24
+$EndPAD
+$PAD
+Sh "14" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 -12.7
+$EndPAD
+$PAD
+Sh "15" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 -10.16
+$EndPAD
+$PAD
+Sh "16" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 -7.62
+$EndPAD
+$PAD
+Sh "21" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -5.08 1.27
+$EndPAD
+$PAD
+Sh "22" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -5.08 3.81
+$EndPAD
+$PAD
+Sh "25" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 5.08
+$EndPAD
+$PAD
+Sh "27" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 10.16
+$EndPAD
+$PAD
+Sh "28" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -7.62 12.7
+$EndPAD
+$PAD
+Sh "29" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -6.35 15.24
+$EndPAD
+$PAD
+Sh "30" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -3.81 15.24
+$EndPAD
+$PAD
+Sh "31" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po -1.27 15.24
+$EndPAD
+$PAD
+Sh "32" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 1.27 15.24
+$EndPAD
+$PAD
+Sh "33" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 3.81 15.24
+$EndPAD
+$PAD
+Sh "34" C 1.5 1.5 0 0 0
+Dr 0.6 0 0
+At STD N 00E0FFFF
+Ne 0 ""
+Po 6.35 15.24
+$EndPAD
+$EndMODULE ArduinoProMini-5V-reduced
 $EndLIBRARY

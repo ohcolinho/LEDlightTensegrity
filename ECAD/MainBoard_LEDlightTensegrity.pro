@@ -1,4 +1,4 @@
-update=8/29/2014 4:08:50 PM
+update=8/30/2014 5:10:09 PM
 version=1
 last_client=cvpcb
 [general]
@@ -84,7 +84,8 @@ LibName17=Arduino
 LibName18=OKL-T6-W12
 LibName19=RedBotAccel
 LibName20=nRF24L01_Module
-LibName21=Arduino_reducedPin
+LibName21=DO-214AB(HSMC)
+LibName22=Arduino_reducedPin
 LibDir=Libraries
 [cvpcb]
 version=1
