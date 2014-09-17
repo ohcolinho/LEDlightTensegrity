@@ -27,7 +27,7 @@
 #include <SPI.h>
 #include "nRF24L01.h"
 #include "RF24.h"
-#include "printf.h"
+//#include "printf.h"
 
 
 // The SparkFun breakout board defaults to 1, set to 0 if SA0 jumper on the bottom of the board is set
@@ -83,8 +83,8 @@ double magnitude = 1.0;  //stores magnitude of accelerations
 double magDiff = 0.0;
 
 //Patch Control Variables
-uint8_t patch = 0;
-boolean show = false;
+uint8_t patch = 1;
+boolean show = true;
 
 //blob patch variables
 uint8_t startBlob = 0;
@@ -101,7 +101,7 @@ boolean debug = false;
 
 void setup()
 {
-  Serial.begin(57600);
+  Serial.begin(115200);
   //Serial.println("MMA8452 Basic Example");
   
   strip.begin();
@@ -187,7 +187,7 @@ void loop()
   magnitude += accelG[2]*accelG[2];
   magnitude = sqrt(magnitude);
   magDiff = abs(magnitude-1.0);
-  if(true) {Serial.print("Len: "); Serial.println(magnitude);}
+  if(true) {Serial.print("magDiff: "); Serial.println(magDiff);}
   /*
   // wait a bit
   delay(50);
@@ -241,18 +241,24 @@ void loop()
       
       //gravity blob with pulsing based on magnitude
       //if magnitude >1.5, somethings really really happening
-      if( magDiff > 0.5) {
-        blobLen = 20;
+      if( magDiff > 1) {
+        if(blobLen <strip.numPixels()){
+        blobLen += 15;
+        }
         blobBright = 255;
       }
       //if magnitude >1.3, something really happening
-      else if( magDiff > 0.3) {
-        blobLen = 10;
+      else if( magDiff > 0.5) {
+        if(blobLen <strip.numPixels()){
+        blobLen += 7;
+        }
         blobBright = 255;
       }
       //if magnitude >1.1, then something happening
       else if( magDiff > 0.1) {
-        blobLen = 5;
+        if(blobLen <strip.numPixels()){
+        blobLen += 3;
+        }
         blobBright = 150;
       }
       
@@ -268,7 +274,7 @@ void loop()
     
   }
   else {
-    clearAll()  
+    clearAll();  
   }
   
   

@@ -87,7 +87,14 @@ boolean switching = false;  //variable to track if in process of switching betwe
 int shockDuration = 50;
 boolean stillShocking = false;
 const float botThres = 0.03;
-const float shockThresh = 0.9;
+const float shockThres = 1.3;
+
+//Pulse patch variables
+int pulsePeriod = 50;
+int pulseCount = 0;
+boolean pulseUp = true;
+int maxPeriod = 75;
+int minPeriod = 5;
     
     
 //blob patch variables
@@ -102,8 +109,9 @@ uint8_t B =0;
 
 //Debug Variables
 boolean debug = false; 
-boolean debugSensors = true;
+boolean debugSensors = false;
 boolean patchDebug = true;
+boolean debugColor = true;
 
 void setup()
 {
@@ -172,12 +180,43 @@ void loop()
   //delay(50);
   
   //map color of rod to angle
-  // if tilt is close to ground, it is 
+  // if tilt is 0 , it is blue
+  //if tilt is in between it is red
+  //if tilt is 1 it is red
+  int tiltMap = (int) (tiltAvg*250.0);
+  if(debugSensors) {Serial.print("tilt map: "); Serial.println(tiltMap); }
+  //if low = blue
+  if(tiltMap <120) {
+    R = (int) (50*(tiltMap/120.0));  //starts at zero, ends at 50
+    G = (int) (100*(tiltMap/120.0)); //starts at zero, ends at 100
+    B = 255-tiltMap;  //blue starts at 255, and ends at 135
+  }
+  //Blue to white
+  else if(tiltMap >120 && tiltMap <150) {  //delta 30
+    R = (int) 50+((tiltMap-120.0)/30)*205;  //starts at 50 ends at 255; add 205
+    G = (int) 50+((tiltMap-120.0)/30)*155;  //starts at 100 ends at 255; add 155
+    B = (int) 50+((tiltMap-120.0)/30)*120;  //starts at 135 ends at 255; add 120
+  }   
+  //white to red
+  else if(tiltMap >150 && tiltMap <180) {  //delta 30
+    R = (int) 255-((tiltMap-120.0)/30)*120;  //starts at 255 ends at 135; sub 120
+    G = (int) 255-((tiltMap-120.0)/30)*155;  //starts at 255 ends at 100; sub 155
+    B = (int) 255-((tiltMap-120.0)/30)*205;  //starts at 255 ends at 50; sub 205
+  }   
+  //Redder
+  else if(tiltMap >180 && tiltMap <255) {
+    R = 100+tiltMap;  //starts at 135 ends 255
+    G = 100+tiltMap;  //starts at 100 ends 50
+    B = 255-tiltMap;  //starts at 50  ends 0
+  }    
+  if(debugColor) {Serial.print("R = "); Serial.println(R);}
+  if(debugColor) {Serial.print("G = "); Serial.println(G);}
+  if(debugColor) {Serial.print("B = "); Serial.println(B);}
 
   
   //color for storing intensity according to Z axis (-1 to 1)
   uint8_t zColor = (uint8_t) abs(250*accelG[3]);
-  if(debug) {Serial.print("ZColor = "); Serial.println(zColor);}
+  if(debugColor) {Serial.print("ZColor = "); Serial.println(zColor);}
   
   //magdiff is amount of movement+general accel
     
@@ -215,10 +254,11 @@ void loop()
     //if sudden shock
     //throw sparkles that fade
     
-    if((magDiff > 0.5) || (stillShocking == true)) {
+    if((magDiff > shockThres) || (stillShocking == true)) {
       if(patch != 3 && stillShocking == false) {  //if just switched to shocking
         patchSwitchCount = 0;  
         stillShocking = true;
+        clearAll(); //clear all LEDS
       }
       else {
         patchSwitchCount++; //increment counter if still shocking
@@ -350,20 +390,48 @@ void loop()
     if(patch == 2) {
       //first fade in for transition
       if( patchSwitchCount < fadeIn) {
-        blastAll(255,255,255,((patchCount*1.0)/fadeIn)*255);
+        blastAll(255,0,0,((patchCount*1.0)/fadeIn)*255);
       }
       //otherwise do the thing at 
       else { 
-        //pulse based on amount of movement, more move more pusling
-        int pulsePeriod = ;
-        Serial.print("patchcount % period"); 
-        Serial.println(patchSwitchCount % pulsePeriod);
-        blastAll(255,255,255,255); 
+        //pulse based on amount of movement, more move = faster pulsing; using modulus to slow down increase
+        if(magDiff > 0.05 && pulsePeriod > minPeriod && ((patchSwitchCount % 2) == 1) ) {
+          pulsePeriod--;  
+        }
+        else {  //otherwise if pulse period is smaller than limit, increase
+          if(pulsePeriod < maxPeriod && (patchSwitchCount % 5) == 1){
+            pulsePeriod++;
+          }
+        }
+        Serial.print("PulsePeriod: "); Serial.println(pulsePeriod);
+        //int pulsePeriod = (int)22-10*magDiff;  //period of cycles
+        //Serial.print("patchcount % period :"); 
+        //Serial.println(patchSwitchCount % pulsePeriod);
+        //int currentPeriod = patchSwitchCount % pulsePeriod;
+        //int brightness = (((patchSwitchCount % pulsePeriod )*1.0)/pulsePeriod)*255;
+        
+        //if pulsecount is less than period, increment; otherwise reset
+        if(pulseCount < pulsePeriod) { pulseCount++; }
+        else { pulseCount = 0;}
+        
+        //if pulsecount is less than half of period, pulse up, otherwise pulse down
+        if(2*pulseCount < pulsePeriod) {
+          pulseUp = true; 
+        }
+        else { pulseUp = false; }
+        //if pulseUp fade in
+        if(pulseUp) {
+          blastAll(255,0,0,((pulseCount*1.0)/pulsePeriod)*255); 
+          
+        }
+        else {  //otherwise fade down
+          blastAll(255,0,0,(((pulsePeriod-pulseCount)*1.0)/pulsePeriod)*255); 
+        }
       }
       patchCount++;
       pixIndex = 20;
       
-      neuralBlob(R,G,B, blobBright,blobLen);  
+      //neuralBlob(R,G,B, blobBright,blobLen);  
       
     //if(patchDebug) {Serial.print("patchCount = "); Serial.println(patchCount);}
       
@@ -372,7 +440,7 @@ void loop()
     //shocking sparkling
     if(patch == 3) {
       //immediately sparkle
-      
+      //flashRandom(0,10);
     }
     
   }
