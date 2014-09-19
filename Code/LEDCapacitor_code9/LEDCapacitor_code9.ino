@@ -85,19 +85,21 @@ int fadeIn = 10;      //number of iterations for fade-in cycle
 int patchSwitchCount = 0;
 const int patchSwitcher= 75;  //number of cycles before switching patches
 boolean switching = false;  //variable to track if in process of switching between states
+unsigned long lastTimeMoved = 0;
     
 //shock patch variables
 int shockDuration = 10;
 boolean stillShocking = false;
 const float botThres = 0.04;
-const float shockThres = 1.76;
+const float shockThres = 1.9;
 
 //Pulse patch variables
 int pulsePeriod = 50;
 int pulseCount = 0;
 boolean pulseUp = true;
-int maxPeriod = 75;
-int minPeriod = 8;
+int maxPeriod = 100;
+int minPeriod = 7;
+int pulseBlobLen = 20;
     
     
 //blob patch variables
@@ -117,12 +119,13 @@ int blobLenZoom = 10;
 //Debug Variables
 boolean debug = false; 
 boolean debugSensors = true;
-boolean patchDebug = true;
+
+boolean patchDebug = false;
 boolean debugColor = false;
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(57600);
   
   //initialize all variables
   for (int i = 0; i<numReadings; i++) {
@@ -186,7 +189,7 @@ void loop()
   tiltPrevious = tiltAvg; 
   tiltAvg = abs(tiltTotal / numReadings);
   tiltDir = tiltTotal /numReadings;
-  tiltDelta = abs(abs(tiltAvg) -abs(tiltPrevious));
+  tiltDelta = tiltAvg -tiltPrevious;
 
   if(debugSensors) {Serial.print("tiltAvg: "); Serial.println(tiltAvg);} 
   if(debugSensors) {Serial.print("tiltDelta "); Serial.println(tiltDelta);} 
@@ -259,6 +262,28 @@ void loop()
     
   */
   
+
+  //last time moved is when it is moving
+  if( magDiff > 0.04){
+    lastTimeMoved = millis();
+    
+   
+  }
+  Serial.print("lasttimemoved: "); Serial.println(lastTimeMoved);
+  //if the current time - lastTimeMoved is greater than 3 min = 180000, turn off
+  if( (millis()-lastTimeMoved) >180000){
+    show = false;  
+  }
+  else{ show = true; }
+  
+  
+  //if 13 minutes = 780 seconds = 780000 millis, turn off
+  //Serial.print("millis: "); Serial.println(millis());
+  if(millis() > 780000) {
+    patch = 0;  
+    show = false;
+    
+  }
   delay(20);
   //if show is on
   if(show) {
@@ -270,13 +295,14 @@ void loop()
       if lots of movement - sparkle    
     */
     
-    if(patchSwitchCount > 5000) {
-      patch = 0;  
-    }  
+
+     
+    
+    
     //if sudden shock
     //throw sparkles that fade
     
-    else if((magDiff > shockThres) || (stillShocking == true)) {
+    if((magDiff > shockThres) || (stillShocking == true)) {
       if(patch != 3 && stillShocking == false) {  //if just switched to shocking
         patchSwitchCount = 0;  
         stillShocking = true;
@@ -298,12 +324,18 @@ void loop()
     // if springing up 
     //tiltDelta > 0.04 means tilting pretty fast, 
     //tiltDelta positive = turning vertical, negative going flat
-    else if (tiltDelta > 0.06 ) {  //if tiltDelta is going up and is positive
+    else if (tiltDelta > 0.07 ) {  //if tiltDelta is going up and is positive
       if(patch != 4) {
         patchSwitchCount = 0;
       }
       patch = 4;  //enable patch 4 
       patchSwitchCount++; 
+    }
+    else if (patch ==4 && patchSwitchCount >0) { 
+      patchSwitchCount++; 
+      if (patchSwitchCount > patchSwitcher){
+        patch = 2;  
+      }
     }
     
     
@@ -376,7 +408,7 @@ void loop()
     if(patch == 3) {
       //immediately sparkle
       
-      flashRandom(0,10);
+      flashRandom(R,G,B,10,(255.0-(patchSwitchCount*1.0/patchSwitcher)*255));
       clearAll();
     }
     
@@ -442,12 +474,12 @@ void loop()
       //first fade in for transition
       if( patchSwitchCount < fadeIn) {
         blastAll(R,G,B,((patchSwitchCount*1.0)/fadeIn)*255);
-        pixIndex = 28;
+        pixIndex = 24;
       }
       //otherwise do the thing at 
       else { 
         //calculate blob position
-        
+        /*
         //gravity blob (makes blob travel along rod based on which direction x is going
         //get X vector (direction along axis) (-) is down tube towards batt, (+) is up tube towards electronics
         //if accelG is negative, increase pixIndex by appropriate amount
@@ -465,9 +497,11 @@ void loop()
           //if(accelG[0] < 1.0) { pixIndex = pixIndex-3; }
         }
         
+        if(true) {Serial.print("pixIndex = "); Serial.println(pixIndex);}
+        */
         
         //pulse based on amount of movement, more move = faster pulsing; using modulus to slow down increase
-        if(magDiff > 0.07 && pulsePeriod > minPeriod && ((patchSwitchCount % 2) == 1)  ) { //#&& ((patchSwitchCount % 2) == 1)
+        if(magDiff > 0.07 && pulsePeriod > minPeriod ) { //#&& ((patchSwitchCount % 2) == 1)
           pulsePeriod--;  
         }
         else {  //otherwise if pulse period is smaller than limit, increase
@@ -489,16 +523,16 @@ void loop()
         //if pulseUp fade in
         if(pulseUp) {
           //blastAll(R,G,B,((pulseCount*1.0)/pulsePeriod)*255); 
-          neuralBlob(R,G,B,((pulseCount*1.0)/pulsePeriod)*255,20);
+          neuralBlob(R,G,B,((pulseCount*1.0)/pulsePeriod)*255,pulseBlobLen);
 
         }
         else {  //otherwise fade down
           //blastAll(R,G,B,(((pulsePeriod-pulseCount)*1.0)/pulsePeriod)*255); 
-          neuralBlob(R,G,B,(((pulsePeriod-pulseCount)*1.0)/pulsePeriod)*255,20);
+          neuralBlob(R,G,B,(((pulsePeriod-pulseCount)*1.0)/pulsePeriod)*255,pulseBlobLen);
         }
       }
-      patchCount++;
-      pixIndex = 20;
+      //patchCount++;
+      //pixIndex = 20;
       
       //neuralBlob(R,G,B, blobBright,blobLen);  
       
@@ -509,6 +543,10 @@ void loop()
     //------------------------------------------
     //spring up shoot up theater chase neural blobs
     if(patch == 4) {
+            
+      flashRandom(255,255,255,5,(255.0-(patchSwitchCount*1.0/patchSwitcher)*255));
+
+      /*
       //if first count, set pixIndex to bottom (based on tiltDir
       if(patchSwitchCount == 0) {
         if(tiltDir > 0.0) {  //if tilt up
@@ -534,12 +572,6 @@ void loop()
             pixIndex = pixIndex - 2;  //decrement pixIndex
           }
           
-          //shorten length as it travels
-          /*
-          if(blobLenZoom > 5 && patchSwitchCount%2 == 1) {
-            blobLenZoom--;
-          }
-          */
         }
         else{
           if (up == true) {
@@ -550,6 +582,7 @@ void loop()
         //patchSwitchCount
         //patchSwitcher  //number of times this will run
       }
+      */
     }
     
   }
@@ -660,19 +693,18 @@ uint32_t WheelRB(byte WheelPos) {
 }
 */
 
-void flashRandom(int wait, uint8_t howmany) {
+void flashRandom(uint8_t red, uint8_t green, uint8_t blue, uint8_t howmany, uint8_t bright) {
  
   for(uint16_t i=0; i<howmany; i++) {
     // get a random pixel from the list
     int j = random(strip.numPixels());
     ////Serial.print("Lighting up "); //Serial.println(j);
     // now we will 'fade' it in 5 steps
-    strip.setPixelColor(j, strip.Color(R, G, B));
+    strip.setPixelColor(j, strip.Color((bright/255.0)*red, (bright/255.0)*green, (bright/255.0)*blue));
     strip.show();
     
 
   }
-  delay(wait);
 }
 
 //--------------------------------------------------------------------------------

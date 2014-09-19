@@ -90,14 +90,14 @@ boolean switching = false;  //variable to track if in process of switching betwe
 int shockDuration = 10;
 boolean stillShocking = false;
 const float botThres = 0.04;
-const float shockThres = 1.76;
+const float shockThres = 1.9;
 
 //Pulse patch variables
 int pulsePeriod = 50;
 int pulseCount = 0;
 boolean pulseUp = true;
-int maxPeriod = 75;
-int minPeriod = 8;
+int maxPeriod = 100;
+int minPeriod = 10;
     
     
 //blob patch variables
@@ -116,7 +116,7 @@ int blobLenZoom = 10;
 
 //Debug Variables
 boolean debug = false; 
-boolean debugSensors = true;
+boolean debugSensors = false;
 boolean patchDebug = true;
 boolean debugColor = false;
 
@@ -186,7 +186,7 @@ void loop()
   tiltPrevious = tiltAvg; 
   tiltAvg = abs(tiltTotal / numReadings);
   tiltDir = tiltTotal /numReadings;
-  tiltDelta = abs(abs(tiltAvg) -abs(tiltPrevious));
+  tiltDelta = tiltAvg -tiltPrevious;
 
   if(debugSensors) {Serial.print("tiltAvg: "); Serial.println(tiltAvg);} 
   if(debugSensors) {Serial.print("tiltDelta "); Serial.println(tiltDelta);} 
@@ -270,9 +270,14 @@ void loop()
       if lots of movement - sparkle    
     */
     
-    if(patchSwitchCount > 5000) {
+    //if no movement for 13 minutes = 780 seconds = 780000 millis, 
+    if(millis() > 780000) {
       patch = 0;  
-    }  
+      show = false;
+    }
+     
+    
+    
     //if sudden shock
     //throw sparkles that fade
     
@@ -304,6 +309,12 @@ void loop()
       }
       patch = 4;  //enable patch 4 
       patchSwitchCount++; 
+    }
+    else if (patch ==4 && patchSwitchCount >0) { 
+      patchSwitchCount++; 
+      if (patchSwitchCount > patchSwitcher){
+        patch = 2;  
+      }
     }
     
     

@@ -90,7 +90,7 @@ boolean switching = false;  //variable to track if in process of switching betwe
 int shockDuration = 10;
 boolean stillShocking = false;
 const float botThres = 0.04;
-const float shockThres = 1.76;
+const float shockThres = 1.85;
 
 //Pulse patch variables
 int pulsePeriod = 50;
@@ -269,14 +269,15 @@ void loop()
       if some movement - start pulsing - 
       if lots of movement - sparkle    
     */
-    
+    /*
     if(patchSwitchCount > 5000) {
       patch = 0;  
-    }  
+    }
+    */ 
     //if sudden shock
     //throw sparkles that fade
     
-    else if((magDiff > shockThres) || (stillShocking == true)) {
+    if((magDiff > shockThres) || (stillShocking == true)) {
       if(patch != 3 && stillShocking == false) {  //if just switched to shocking
         patchSwitchCount = 0;  
         stillShocking = true;
@@ -305,6 +306,7 @@ void loop()
       patch = 4;  //enable patch 4 
       patchSwitchCount++; 
     }
+    else if (patch ==4 && patchSwitchCount >0) { patchSwitchCount++; }
     
     
     //if little movement and resting angles
@@ -376,7 +378,7 @@ void loop()
     if(patch == 3) {
       //immediately sparkle
       
-      flashRandom(0,10);
+      flashRandom(0,10,(255.0-((patchSwitchCount*1.0)/patchSwitcher)*255));
       clearAll();
     }
     
@@ -660,14 +662,14 @@ uint32_t WheelRB(byte WheelPos) {
 }
 */
 
-void flashRandom(int wait, uint8_t howmany) {
+void flashRandom(int wait, uint8_t howmany, uint8_t bright) {
  
   for(uint16_t i=0; i<howmany; i++) {
     // get a random pixel from the list
     int j = random(strip.numPixels());
     ////Serial.print("Lighting up "); //Serial.println(j);
     // now we will 'fade' it in 5 steps
-    strip.setPixelColor(j, strip.Color(R, G, B));
+    strip.setPixelColor(j, strip.Color((bright/255.0)*R, (bright/255.0)*G, (bright/255.0)*B));
     strip.show();
     
 
